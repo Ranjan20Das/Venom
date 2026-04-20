@@ -1,20 +1,57 @@
+import { useEffect, useRef } from "react";
 import venomImg from "@/assets/venom-hero.png";
 
 export function Hero() {
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    let raf = 0;
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+
+    const onMove = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 2;
+      const y = (e.clientY / window.innerHeight - 0.5) * 2;
+      targetX = x * 30;
+      targetY = y * 20;
+    };
+
+    const tick = () => {
+      currentX += (targetX - currentX) * 0.08;
+      currentY += (targetY - currentY) * 0.08;
+      if (imgRef.current) {
+        imgRef.current.style.transform = `scale(1.12) translate3d(${currentX}px, ${currentY}px, 0)`;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    window.addEventListener("mousemove", onMove);
+    raf = requestAnimationFrame(tick);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-background">
       {/* Background image */}
       <div className="absolute inset-0 animate-fade-in-slow">
         <img
+          ref={imgRef}
           src={venomImg}
           alt="Venom"
-          className="h-full w-full object-cover object-center opacity-80"
+          className="h-full w-full object-cover object-center opacity-80 will-change-transform"
+          style={{ transform: "scale(1.12)" }}
         />
         {/* Vignette + side gradients for legibility */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,oklch(0.06_0_0/0.5)_55%,oklch(0.04_0_0/0.95)_100%)]" />
         <div className="absolute inset-y-0 left-0 w-2/3 bg-gradient-to-r from-background via-background/70 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-background to-transparent" />
       </div>
+
 
       {/* Content */}
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col px-6 pt-32 pb-12 md:px-10">
