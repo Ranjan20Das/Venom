@@ -22,7 +22,7 @@ export function Hero() {
       currentX += (targetX - currentX) * 0.08;
       currentY += (targetY - currentY) * 0.08;
       if (imgRef.current) {
-        imgRef.current.style.transform = `scale(1.12) translate3d(${currentX}px, ${currentY}px, 0)`;
+        imgRef.current.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
       }
       raf = requestAnimationFrame(tick);
     };
@@ -39,13 +39,15 @@ export function Hero() {
     <section className="relative min-h-screen w-full overflow-hidden bg-background">
       {/* Background image */}
       <div className="absolute inset-0 animate-fade-in-slow">
-        <img
-          ref={imgRef}
-          src={venomImg}
-          alt="Venom"
-          className="h-full w-full object-cover object-center opacity-80 will-change-transform"
-          style={{ transform: "scale(1.12)" }}
-        />
+        {/* Ken Burns wrapper: slow continuous scale + pan */}
+        <div className="absolute inset-0 animate-ken-burns will-change-transform">
+          <img
+            ref={imgRef}
+            src={venomImg}
+            alt="Venom"
+            className="h-full w-full object-cover object-center opacity-80 will-change-transform"
+          />
+        </div>
         {/* Vignette + side gradients for legibility */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,oklch(0.06_0_0/0.5)_55%,oklch(0.04_0_0/0.95)_100%)]" />
         <div className="absolute inset-y-0 left-0 w-2/3 bg-gradient-to-r from-background via-background/70 to-transparent" />
