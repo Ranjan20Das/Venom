@@ -1,21 +1,36 @@
 import { Link } from "@tanstack/react-router";
+import { motion } from "framer-motion";
 
 const links = ["Home", "About", "Explore", "Movies", "Contact"];
 
 export function Navbar() {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 animate-fade-in-slow">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 md:px-10">
-        <Link to="/" className="font-display text-2xl tracking-tight text-foreground">
-          Venom<span className="text-muted-foreground">Universe</span>
+    <motion.header
+      initial={{ y: -40, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+      className="fixed top-4 left-1/2 z-50 -translate-x-1/2 w-[min(96%,1100px)]"
+    >
+      <nav className="flex items-center justify-between gap-6 rounded-full border border-foreground/10 bg-background/70 px-3 py-2 pl-5 backdrop-blur-xl shadow-[0_10px_40px_-10px_oklch(0_0_0/0.8)]">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-2">
+          <span className="grid h-8 w-8 place-items-center rounded-full bg-foreground/10">
+            <svg viewBox="0 0 24 24" className="h-4 w-4 fill-foreground">
+              <path d="M12 2c2.5 4 6 7 6 11a6 6 0 11-12 0c0-4 3.5-7 6-11z" />
+            </svg>
+          </span>
+          <span className="font-display text-lg tracking-tight text-foreground">
+            Venom<span className="text-foreground/60">Universe</span>
+          </span>
         </Link>
 
-        <ul className="hidden items-center gap-10 md:flex">
+        {/* Links */}
+        <ul className="hidden items-center gap-7 md:flex">
           {links.map((l) => (
             <li key={l}>
               <a
                 href="#"
-                className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground/70 transition-colors hover:text-foreground"
+                className="text-sm font-medium text-foreground/65 transition-colors hover:text-foreground"
               >
                 {l}
               </a>
@@ -23,13 +38,14 @@ export function Navbar() {
           ))}
         </ul>
 
+        {/* Enter */}
         <a
           href="#"
-          className="group relative inline-flex items-center justify-center rounded-full border border-foreground/60 px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.25em] text-foreground transition-all duration-300 hover:border-foreground hover:shadow-[0_0_30px_oklch(1_0_0_/_0.35)]"
+          className="inline-flex items-center justify-center rounded-full bg-foreground px-5 py-2 text-xs font-bold uppercase tracking-[0.2em] text-background transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_oklch(1_0_0/0.4)]"
         >
           Enter
         </a>
       </nav>
-    </header>
+    </motion.header>
   );
 }
