@@ -1,7 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 
-const links = ["Home", "About", "Explore", "Movies", "Contact"];
+const links: { label: string; to: string }[] = [
+  { label: "Home", to: "/" },
+  { label: "About", to: "/" },
+  { label: "Explore", to: "/" },
+  { label: "Movies", to: "/movies" },
+  { label: "Contact", to: "/" },
+];
 
 export function Navbar() {
   return (
@@ -27,24 +33,26 @@ export function Navbar() {
         {/* Links */}
         <ul className="hidden items-center gap-7 md:flex">
           {links.map((l) => (
-            <li key={l}>
-              <a
-                href="#"
+            <li key={l.label}>
+              <Link
+                to={l.to}
                 className="text-sm font-medium text-foreground/65 transition-colors hover:text-foreground"
+                activeProps={{ className: "text-foreground" }}
+                activeOptions={{ exact: true }}
               >
-                {l}
-              </a>
+                {l.label}
+              </Link>
             </li>
           ))}
         </ul>
 
         {/* Enter */}
-        <a
-          href="#"
+        <Link
+          to="/movies"
           className="inline-flex items-center justify-center rounded-full bg-foreground px-5 py-2 text-xs font-bold uppercase tracking-[0.2em] text-background transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_oklch(1_0_0/0.4)]"
         >
           Enter
-        </a>
+        </Link>
       </nav>
     </motion.header>
   );
