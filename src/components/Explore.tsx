@@ -1,9 +1,11 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  type Variants,
+} from "framer-motion";
 import {
   Zap,
   Maximize2,
@@ -14,14 +16,25 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  show: (i: number = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.9,
+      ease: [0.22, 1, 0.36, 1] as const,
+      delay: i * 0.08,
+    },
+  }),
+};
 
 type Capability = {
   icon: typeof Zap;
   meta: string;
   title: string;
   body: string;
-  span: string; // grid span classes
+  span: string;
 };
 
 const capabilities: Capability[] = [
@@ -71,134 +84,160 @@ const capabilities: Capability[] = [
 
 export function Explore() {
   const sectionRef = useRef<HTMLElement>(null);
-  const headerRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
   });
-  const ghostX = useTransform(scrollYProgress, [0, 1], ["6%", "-14%"]);
-  const ghostY = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
 
-  useGSAP(
-    () => {
-      // Header reveal
-      gsap.from(headerRef.current?.querySelectorAll("[data-reveal]") ?? [], {
-        scrollTrigger: {
-          trigger: headerRef.current,
-          start: "top 80%",
-        },
-        y: 40,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-        stagger: 0.12,
-      });
-
-      // Cards stagger reveal
-      const cards = cardsRef.current?.querySelectorAll("[data-card]") ?? [];
-      gsap.from(cards, {
-        scrollTrigger: {
-          trigger: cardsRef.current,
-          start: "top 75%",
-        },
-        y: 60,
-        opacity: 0,
-        duration: 1.1,
-        ease: "power3.out",
-        stagger: 0.1,
-      });
-
-      // Subtle continuous "breathing" on icon halos
-      gsap.to(".cap-halo", {
-        scale: 1.08,
-        opacity: 0.55,
-        duration: 2.4,
-        ease: "sine.inOut",
-        yoyo: true,
-        repeat: -1,
-        stagger: { each: 0.3, from: "random" },
-      });
-
-      // CTA pulsing glow
-      gsap.to(".cta-glow", {
-        opacity: 0.85,
-        scale: 1.06,
-        duration: 1.8,
-        ease: "sine.inOut",
-        yoyo: true,
-        repeat: -1,
-      });
-    },
-    { scope: sectionRef },
+  // Giant ghost POWER drifts horizontally — same pattern as About's SYMBIOTE
+  const ghostX = useTransform(scrollYProgress, [0, 1], ["-5%", "5%"]);
+  const ghostOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.3, 0.7, 1],
+    [0, 0.06, 0.06, 0],
   );
+
+  // GSAP — only run client-side after mount to avoid hydration mismatch
+  useEffect(() => {
+    if (!mounted || !sectionRef.current) return;
+    let ctx: { revert: () => void } | undefined;
+
+    (async () => {
+      const gsapModule = await import("gsap");
+      const stModule = await import("gsap/ScrollTrigger");
+      const gsap = gsapModule.default;
+      const ScrollTrigger = stModule.ScrollTrigger;
+      gsap.registerPlugin(ScrollTrigger);
+
+      ctx = gsap.context(() => {
+        // Card stagger reveal
+        const cards = sectionRef.current!.querySelectorAll("[data-card]");
+        gsap.from(cards, {
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 70%",
+          },
+          y: 50,
+          opacity: 0,
+          duration: 1,
+          ease: "power3.out",
+          stagger: 0.1,
+        });
+
+        // Breathing icon halos
+        gsap.to(".cap-halo", {
+          scale: 1.1,
+          opacity: 0.55,
+          duration: 2.4,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+          stagger: { each: 0.3, from: "random" },
+        });
+
+        // CTA pulse
+        gsap.to(".cta-glow", {
+          opacity: 0.9,
+          scale: 1.08,
+          duration: 1.8,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+        });
+      }, sectionRef);
+    })();
+
+    return () => ctx?.revert();
+  }, [mounted]);
 
   return (
     <section
-      id="explore"
       ref={sectionRef}
-      className="relative overflow-hidden bg-background py-28 md:py-40"
+      id="explore"
+      className="relative overflow-hidden bg-background py-32 md:py-40"
     >
-      {/* Ghost background word */}
-      <motion.span
+      {/* Giant ghost POWER word — same treatment as SYMBIOTE in About */}
+      <motion.h2
+        style={{ x: ghostX, opacity: ghostOpacity }}
+        className="font-display pointer-events-none absolute inset-x-0 top-16 select-none whitespace-nowrap text-center text-[22vw] leading-none tracking-tight text-foreground"
         aria-hidden
-        style={{ x: ghostX, y: ghostY }}
-        className="pointer-events-none absolute -top-6 right-0 select-none font-display text-[22vw] leading-none tracking-tighter text-foreground/[0.04] md:text-[14vw]"
       >
         POWER
-      </motion.span>
+      </motion.h2>
 
-      {/* Vignette */}
-      <div className="pointer-events-none absolute inset-0 [background:var(--gradient-vignette)]" />
-
-      <div className="relative mx-auto max-w-7xl px-6">
+      <div className="relative mx-auto max-w-7xl px-6 md:px-10">
         {/* Header */}
-        <div
-          ref={headerRef}
-          className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-16"
-        >
-          <div className="md:col-span-7">
-            <span
-              data-reveal
-              className="text-xs font-semibold uppercase tracking-[0.4em] text-foreground/40"
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-7">
+            <motion.p
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.6 }}
+              className="text-xs font-semibold uppercase tracking-[0.4em] text-muted-foreground"
             >
               Symbiote Capabilities
-            </span>
-            <h2
-              data-reveal
-              className="font-display mt-6 text-5xl leading-[0.95] tracking-tight text-foreground md:text-7xl"
-            >
-              Lethal
-              <br />
-              <span className="text-foreground/25">Protector.</span>
+            </motion.p>
+
+            <h2 className="font-display mt-6 text-5xl leading-[0.95] tracking-tight md:text-7xl lg:text-[5.5rem]">
+              <motion.span
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.5 }}
+                custom={0}
+                className="block text-foreground"
+              >
+                Lethal
+              </motion.span>
+              <motion.span
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.5 }}
+                custom={1}
+                className="block text-foreground/30"
+              >
+                Protector.
+              </motion.span>
             </h2>
           </div>
-          <div className="md:col-span-5 md:pt-10">
-            <p
-              data-reveal
-              className="max-w-md text-base leading-relaxed text-foreground/70"
+
+          <div className="lg:col-span-5 lg:self-end">
+            <motion.p
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.6 }}
+              custom={2}
+              className="max-w-md text-base leading-relaxed text-foreground/75"
             >
               Six extraordinary abilities inherited from Spider-Man's genetics,
               amplified by alien biology.
-            </p>
-            <div
-              data-reveal
-              className="mt-6 flex items-center gap-4 text-xs uppercase tracking-[0.3em] text-foreground/40"
+            </motion.p>
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.6 }}
+              custom={3}
+              className="mt-6 flex items-center gap-4 text-[10px] font-semibold uppercase tracking-[0.3em] text-foreground/40"
             >
               <span>Weaknesses</span>
               <span className="h-px flex-1 bg-foreground/15" />
               <span className="text-foreground/70">Fire · Sonic Waves</span>
-            </div>
+            </motion.div>
           </div>
         </div>
 
-        {/* Cards grid */}
-        <div
-          ref={cardsRef}
-          className="mt-16 grid grid-cols-1 gap-4 md:mt-20 md:grid-cols-12 md:auto-rows-[minmax(220px,auto)]"
-        >
+        {/* Cards bento grid */}
+        <div className="mt-20 grid grid-cols-1 gap-4 md:mt-24 md:grid-cols-12 md:auto-rows-[minmax(220px,auto)]">
           {capabilities.map((cap) => {
             const Icon = cap.icon;
             return (
@@ -207,12 +246,11 @@ export function Explore() {
                 data-card
                 className={[
                   "group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-foreground/10 bg-card/40 p-7 backdrop-blur-sm transition-all duration-500",
-                  "hover:border-foreground/25 hover:bg-card/70 hover:-translate-y-1",
+                  "hover:-translate-y-1 hover:border-foreground/25 hover:bg-card/70",
                   cap.span,
                 ].join(" ")}
               >
-                {/* Hover glow */}
-                <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 [background:radial-gradient(600px_circle_at_var(--x,50%)_var(--y,0%),oklch(1_0_0/0.06),transparent_60%)]" />
+                <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 [background:radial-gradient(600px_circle_at_50%_0%,oklch(1_0_0/0.06),transparent_60%)]" />
 
                 {/* Icon */}
                 <div className="relative">
@@ -240,10 +278,7 @@ export function Explore() {
         </div>
 
         {/* CTA */}
-        <div
-          ref={ctaRef}
-          className="relative mt-24 flex flex-col items-center justify-center text-center md:mt-32"
-        >
+        <div className="relative mt-24 flex flex-col items-center justify-center text-center md:mt-32">
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -261,7 +296,6 @@ export function Explore() {
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
             className="relative"
           >
-            {/* Glow halo */}
             <div className="cta-glow pointer-events-none absolute -inset-8 rounded-full bg-foreground/30 blur-3xl opacity-60" />
 
             <Link
