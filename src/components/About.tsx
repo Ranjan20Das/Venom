@@ -1,13 +1,13 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import { useRef } from "react";
 import { SymbioteOrbit } from "./SymbioteOrbit";
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
-  show: (i = 0) => ({
+  show: (i: number = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: i * 0.1 },
+    transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] as const, delay: i * 0.1 },
   }),
 };
 
