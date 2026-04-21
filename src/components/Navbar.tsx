@@ -1,12 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 
-const links: { label: string; to: string }[] = [
+const links: { label: string; to: string; hash?: string }[] = [
   { label: "Home", to: "/" },
   { label: "About", to: "/" },
   { label: "Explore", to: "/" },
   { label: "Movies", to: "/movies" },
-  { label: "Contact", to: "/" },
+  { label: "Contact", to: "/", hash: "contact" },
 ];
 
 export function Navbar() {
@@ -36,6 +36,7 @@ export function Navbar() {
             <li key={l.label}>
               <Link
                 to={l.to}
+                hash={l.hash}
                 className="text-sm font-medium text-foreground/65 transition-colors hover:text-foreground"
                 activeProps={{ className: "text-foreground" }}
                 activeOptions={{ exact: true }}
