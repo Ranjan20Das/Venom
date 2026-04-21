@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type PointerEvent as ReactPointerEvent } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
@@ -129,6 +129,30 @@ function MoviesPage() {
     };
   }, []);
 
+  const handlePointerMove = (e: ReactPointerEvent<HTMLElement>) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width; // 0..1
+    const py = (e.clientY - rect.top) / rect.height; // 0..1
+    const rx = (0.5 - py) * 14; // tilt X (deg)
+    const ry = (px - 0.5) * 18; // tilt Y (deg)
+    card.style.setProperty("--rx", `${rx}deg`);
+    card.style.setProperty("--ry", `${ry}deg`);
+    card.style.setProperty("--mx", `${px * 100}%`);
+    card.style.setProperty("--my", `${py * 100}%`);
+    card.style.setProperty(
+      "--shadow",
+      `${(px - 0.5) * -40}px ${(py - 0.5) * -40 + 30}px 60px -10px oklch(0 0 0 / 0.7)`,
+    );
+  };
+
+  const handlePointerLeave = (e: ReactPointerEvent<HTMLElement>) => {
+    const card = e.currentTarget;
+    card.style.setProperty("--rx", "0deg");
+    card.style.setProperty("--ry", "0deg");
+    card.style.setProperty("--shadow", "0 20px 40px -20px oklch(0 0 0 / 0.5)");
+  };
+
   return (
     <main
       ref={sectionRef}
@@ -197,10 +221,26 @@ function MoviesPage() {
             {films.map((f) => (
               <article
                 key={f.title}
-                className="film-card group relative flex flex-col overflow-hidden rounded-3xl border border-foreground/10 bg-card/50 backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 hover:border-foreground/30"
+                onPointerMove={handlePointerMove}
+                onPointerLeave={handlePointerLeave}
+                style={{
+                  transform:
+                    "perspective(1100px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg))",
+                  boxShadow: "var(--shadow, 0 20px 40px -20px oklch(0 0 0 / 0.5))",
+                  transition:
+                    "transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease, border-color 0.5s ease",
+                  transformStyle: "preserve-3d",
+                }}
+                className="film-card group relative flex flex-col overflow-hidden rounded-3xl border border-foreground/10 bg-card/50 backdrop-blur-sm hover:border-foreground/30"
               >
-                {/* Hover glow */}
-                <div className="pointer-events-none absolute inset-0 z-20 opacity-0 transition-opacity duration-700 group-hover:opacity-100 [background:radial-gradient(600px_circle_at_50%_0%,oklch(1_0_0/0.15),transparent_60%)]" />
+                {/* Pointer-following sheen */}
+                <div
+                  className="pointer-events-none absolute inset-0 z-20 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                  style={{
+                    background:
+                      "radial-gradient(450px circle at var(--mx,50%) var(--my,50%), oklch(1 0 0 / 0.18), transparent 55%)",
+                  }}
+                />
                 <div className="pointer-events-none absolute -inset-px z-0 rounded-3xl opacity-0 blur-2xl transition-opacity duration-700 group-hover:opacity-60 [background:radial-gradient(400px_circle_at_50%_50%,oklch(1_0_0/0.25),transparent_70%)]" />
 
                 {/* Image */}
