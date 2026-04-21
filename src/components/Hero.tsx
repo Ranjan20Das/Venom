@@ -36,7 +36,7 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-background">
+    <section id="home" className="relative min-h-screen w-full overflow-hidden bg-background">
       {/* Background image */}
       <div className="absolute inset-0 animate-fade-in-slow">
         {/* Ken Burns wrapper: slow continuous scale + pan */}
