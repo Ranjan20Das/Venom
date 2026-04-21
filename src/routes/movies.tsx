@@ -77,54 +77,77 @@ function MoviesPage() {
     let ctx: { revert: () => void } | null = null;
     let mounted = true;
 
+    // Preview-safe guard: if GSAP fails to load or ScrollTrigger never fires
+    // (HMR remount, route swap, slow chunk), force cards visible after 800ms
+    // so the page never appears blank.
+    const forceVisible = () => {
+      if (!cardsRef.current) return;
+      cardsRef.current.querySelectorAll<HTMLElement>(".film-card").forEach((card) => {
+        card.style.opacity = "1";
+      });
+    };
+    const fallbackTimer = setTimeout(forceVisible, 800);
+
     (async () => {
-      const [{ gsap }, { ScrollTrigger }] = await Promise.all([
-        import("gsap"),
-        import("gsap/ScrollTrigger"),
-      ]);
-      gsap.registerPlugin(ScrollTrigger);
-      if (!mounted || !cardsRef.current) return;
+      try {
+        const [{ gsap }, { ScrollTrigger }] = await Promise.all([
+          import("gsap"),
+          import("gsap/ScrollTrigger"),
+        ]);
+        if (!mounted || !cardsRef.current) return;
+        gsap.registerPlugin(ScrollTrigger);
 
-      ctx = gsap.context(() => {
-        const cards = gsap.utils.toArray<HTMLElement>(".film-card");
-        cards.forEach((card, i) => {
-          gsap.fromTo(
-            card,
-            { y: 120, opacity: 0, scale: 0.94, rotateX: 8 },
-            {
-              y: 0,
-              opacity: 1,
-              scale: 1,
-              rotateX: 0,
-              duration: 1.2,
-              delay: i * 0.18,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: card,
-                start: "top 88%",
+        ctx = gsap.context(() => {
+          const cards = gsap.utils.toArray<HTMLElement>(".film-card");
+          cards.forEach((card, i) => {
+            gsap.fromTo(
+              card,
+              { y: 120, opacity: 0, scale: 0.94, rotateX: 8 },
+              {
+                y: 0,
+                opacity: 1,
+                scale: 1,
+                rotateX: 0,
+                duration: 1.2,
+                delay: i * 0.18,
+                ease: "power3.out",
+                scrollTrigger: {
+                  trigger: card,
+                  start: "top 88%",
+                  toggleActions: "play none none none",
+                },
+                onInterrupt: () => {
+                  card.style.opacity = "1";
+                },
               },
-            },
-          );
+            );
 
-          const img = card.querySelector(".film-img");
-          if (img) {
-            gsap.to(img, {
-              yPercent: -12,
-              ease: "none",
-              scrollTrigger: {
-                trigger: card,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: true,
-              },
-            });
-          }
-        });
-      }, cardsRef);
+            const img = card.querySelector(".film-img");
+            if (img) {
+              gsap.to(img, {
+                yPercent: -12,
+                ease: "none",
+                scrollTrigger: {
+                  trigger: card,
+                  start: "top bottom",
+                  end: "bottom top",
+                  scrub: true,
+                },
+              });
+            }
+          });
+
+          ScrollTrigger.refresh();
+        }, cardsRef);
+      } catch (err) {
+        console.warn("[movies] GSAP failed; rendering static cards", err);
+        forceVisible();
+      }
     })();
 
     return () => {
       mounted = false;
+      clearTimeout(fallbackTimer);
       ctx?.revert();
     };
   }, []);
