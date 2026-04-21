@@ -2,10 +2,10 @@ import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 
 const links: { label: string; to: string; hash?: string }[] = [
-  { label: "Home", to: "/" },
-  { label: "About", to: "/" },
-  { label: "Explore", to: "/" },
-  { label: "Movies", to: "/movies" },
+  { label: "Home", to: "/", hash: "home" },
+  { label: "Symbiote", to: "/", hash: "about" },
+  { label: "Power", to: "/", hash: "explore" },
+  { label: "Trilogy", to: "/movies" },
   { label: "Contact", to: "/", hash: "contact" },
 ];
 
