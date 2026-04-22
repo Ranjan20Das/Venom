@@ -43,7 +43,7 @@ const capabilities: Capability[] = [
     meta: "LIFTING CAPACITY: 40 TONS",
     title: "Superhuman Strength",
     body: "The symbiote augments its host's musculature to superhuman levels, granting the ability to lift 40 tons and strike with bone-crushing force. Reflexes and agility are enhanced far beyond peak human capability.",
-    span: "md:col-span-7 md:row-span-2",
+    span: "md:col-span-7",
   },
   {
     icon: Maximize2,
@@ -57,21 +57,21 @@ const capabilities: Capability[] = [
     meta: "FULL-BODY MORPHOLOGY",
     title: "Shape-Shifting",
     body: "Generates tendrils, shields, claws, and full alternate body forms from Brock's mass. Near-invisibility via colour and texture mimicry.",
-    span: "md:col-span-3",
+    span: "md:col-span-4",
   },
   {
     icon: RefreshCw,
     meta: "HEALS IN SECONDS",
     title: "Rapid Regeneration",
     body: "Symbiote matter seals wounds and reconstitutes damaged tissue at extraordinary speed, making Venom nearly impossible to incapacitate.",
-    span: "md:col-span-2",
+    span: "md:col-span-4",
   },
   {
     icon: ShieldCheck,
-    meta: "IMMUNE TO SPIDER-SENSE · RESISTS GHOST RIDER'S PENANCE STARE",
+    meta: "IMMUNE TO SPIDER-SENSE · RESISTS PENANCE STARE",
     title: "Psychic & Supernatural Immunity",
     body: "Because the symbiote absorbed Spider-Man's genetic blueprint, Peter Parker's extrasensory spider-sense cannot detect Venom. The alien biology also provides resistance to certain supernatural attacks — though sonic waves and intense heat remain critical vulnerabilities.",
-    span: "md:col-span-12",
+    span: "md:col-span-4",
   },
   {
     icon: Brain,
@@ -237,7 +237,7 @@ export function Explore() {
         </div>
 
         {/* Cards bento grid */}
-        <div className="mt-20 grid grid-cols-1 gap-4 md:mt-24 md:grid-cols-12 md:auto-rows-[minmax(220px,auto)]">
+        <div className="mt-20 grid grid-cols-1 gap-5 sm:grid-cols-2 md:mt-24 md:grid-cols-12">
           {capabilities.map((cap) => {
             const Icon = cap.icon;
             return (
@@ -245,7 +245,7 @@ export function Explore() {
                 key={cap.title}
                 data-card
                 className={[
-                  "group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-foreground/10 bg-card/40 p-7 backdrop-blur-sm transition-all duration-500",
+                  "group relative flex h-full min-h-[320px] flex-col overflow-hidden rounded-3xl border border-foreground/10 bg-card/40 p-7 backdrop-blur-sm transition-all duration-500",
                   "hover:-translate-y-1 hover:border-foreground/25 hover:bg-card/70",
                   cap.span,
                 ].join(" ")}
@@ -261,14 +261,14 @@ export function Explore() {
                 </div>
 
                 {/* Body */}
-                <div className="mt-10 space-y-3">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-foreground/35">
+                <div className="mt-8 flex flex-col gap-3">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground/55">
                     {cap.meta}
                   </p>
-                  <h3 className="font-display text-2xl leading-tight tracking-tight text-foreground md:text-[1.7rem]">
+                  <h3 className="font-display text-xl leading-tight tracking-tight text-foreground md:text-2xl">
                     {cap.title}
                   </h3>
-                  <p className="text-sm leading-relaxed text-foreground/65">
+                  <p className="text-sm leading-relaxed text-foreground/80">
                     {cap.body}
                   </p>
                 </div>
