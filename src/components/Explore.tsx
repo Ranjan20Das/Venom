@@ -243,40 +243,53 @@ export function Explore() {
           </div>
         </div>
 
-        {/* Cards bento grid */}
-        <div className="relative z-10 mt-20 grid grid-cols-1 gap-5 sm:grid-cols-2 md:mt-24 md:grid-cols-12">
-          {capabilities.map((cap) => {
+        {/* Cards — uniform 3-column grid */}
+        <div className="relative z-10 mt-20 grid grid-cols-1 gap-5 sm:grid-cols-2 md:mt-24 lg:grid-cols-3">
+          {capabilities.map((cap, idx) => {
             const Icon = cap.icon;
             return (
               <article
                 key={cap.title}
                 data-card
-                className={[
-                  "group relative z-10 flex h-full min-h-[340px] flex-col overflow-hidden rounded-3xl border border-foreground/20 bg-card/90 p-6 shadow-[0_8px_40px_-12px_oklch(0_0_0/0.6)] backdrop-blur-md transition-all duration-500 sm:p-7",
-                  "hover:-translate-y-1 hover:border-foreground/40 hover:bg-card",
-                  cap.span,
-                ].join(" ")}
+                className="group relative z-10 flex h-full flex-col overflow-hidden rounded-2xl border border-foreground/15 bg-card/90 p-7 shadow-[0_8px_40px_-12px_oklch(0_0_0/0.6)] backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:border-foreground/40 hover:bg-card"
               >
-                <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 [background:radial-gradient(600px_circle_at_50%_0%,oklch(1_0_0/0.06),transparent_60%)]" />
+                <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 [background:radial-gradient(500px_circle_at_50%_0%,oklch(1_0_0/0.06),transparent_60%)]" />
 
-                {/* Icon */}
-                <div className="relative shrink-0">
-                  <div className="cap-halo pointer-events-none absolute -inset-2 rounded-full bg-foreground/10 blur-xl opacity-30" />
-                  <div className="relative grid h-11 w-11 place-items-center rounded-full bg-foreground/15 ring-1 ring-foreground/25">
-                    <Icon className="h-4 w-4 text-foreground" />
+                {/* Header row: icon + index */}
+                <div className="relative flex items-start justify-between">
+                  <div className="relative">
+                    <div className="cap-halo pointer-events-none absolute -inset-2 rounded-full bg-foreground/10 blur-xl opacity-30" />
+                    <div className="relative grid h-12 w-12 place-items-center rounded-xl bg-foreground/15 ring-1 ring-foreground/25">
+                      <Icon className="h-5 w-5 text-foreground" />
+                    </div>
                   </div>
+                  <span className="font-mono text-[11px] font-semibold tracking-[0.2em] text-foreground/40">
+                    0{idx + 1}
+                  </span>
                 </div>
 
+                {/* Meta */}
+                <p className="relative mt-7 text-[10px] font-semibold uppercase tracking-[0.25em] text-foreground/55">
+                  {cap.meta}
+                </p>
+
+                {/* Title */}
+                <h3 className="font-display relative mt-3 text-2xl leading-tight tracking-tight text-foreground">
+                  {cap.title}
+                </h3>
+
                 {/* Body */}
-                <div className="mt-6 flex flex-1 flex-col gap-3">
-                  <p className="text-[10px] font-semibold uppercase leading-relaxed tracking-[0.2em] text-foreground/65">
-                    {cap.meta}
+                <p className="relative mt-3 flex-1 text-sm leading-relaxed text-foreground/80">
+                  {cap.body}
+                </p>
+
+                {/* Footer stat */}
+                <div className="relative mt-6 border-t border-foreground/10 pt-5">
+                  <p className="font-display text-3xl leading-none tracking-tight text-foreground">
+                    {cap.stat}
                   </p>
-                  <h3 className="font-display text-xl leading-tight tracking-tight text-foreground md:text-[1.6rem]">
-                    {cap.title}
-                  </h3>
-                  <p className="text-sm leading-relaxed text-foreground/85">
-                    {cap.body}
+                  <p className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.25em] text-foreground/50">
+                    {cap.statLabel}
                   </p>
                 </div>
               </article>
