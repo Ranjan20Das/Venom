@@ -165,7 +165,7 @@ export function Explore() {
       {/* Giant ghost POWER word — same treatment as SYMBIOTE in About */}
       <motion.h2
         style={{ x: ghostX, opacity: ghostOpacity }}
-        className="font-display pointer-events-none absolute inset-x-0 top-16 select-none whitespace-nowrap text-center text-[22vw] leading-none tracking-tight text-foreground"
+        className="font-display pointer-events-none absolute inset-x-0 top-16 z-0 select-none whitespace-nowrap text-center text-[22vw] leading-none tracking-tight text-foreground"
         aria-hidden
       >
         POWER
@@ -237,7 +237,7 @@ export function Explore() {
         </div>
 
         {/* Cards bento grid */}
-        <div className="mt-20 grid grid-cols-1 gap-5 sm:grid-cols-2 md:mt-24 md:grid-cols-12">
+        <div className="relative z-10 mt-20 grid grid-cols-1 gap-5 sm:grid-cols-2 md:mt-24 md:grid-cols-12">
           {capabilities.map((cap) => {
             const Icon = cap.icon;
             return (
@@ -245,30 +245,30 @@ export function Explore() {
                 key={cap.title}
                 data-card
                 className={[
-                  "group relative flex h-full min-h-[320px] flex-col overflow-hidden rounded-3xl border border-foreground/20 bg-card/80 p-7 backdrop-blur-md transition-all duration-500",
-                  "hover:-translate-y-1 hover:border-foreground/40 hover:bg-card/95",
+                  "group relative z-10 flex h-full min-h-[340px] flex-col overflow-hidden rounded-3xl border border-foreground/20 bg-card/90 p-6 shadow-[0_8px_40px_-12px_oklch(0_0_0/0.6)] backdrop-blur-md transition-all duration-500 sm:p-7",
+                  "hover:-translate-y-1 hover:border-foreground/40 hover:bg-card",
                   cap.span,
                 ].join(" ")}
               >
                 <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 [background:radial-gradient(600px_circle_at_50%_0%,oklch(1_0_0/0.06),transparent_60%)]" />
 
                 {/* Icon */}
-                <div className="relative">
+                <div className="relative shrink-0">
                   <div className="cap-halo pointer-events-none absolute -inset-2 rounded-full bg-foreground/10 blur-xl opacity-30" />
-                  <div className="relative grid h-11 w-11 place-items-center rounded-full bg-foreground/10 ring-1 ring-foreground/15">
+                  <div className="relative grid h-11 w-11 place-items-center rounded-full bg-foreground/15 ring-1 ring-foreground/25">
                     <Icon className="h-4 w-4 text-foreground" />
                   </div>
                 </div>
 
                 {/* Body */}
-                <div className="mt-8 flex flex-col gap-3">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground/55">
+                <div className="mt-6 flex flex-1 flex-col gap-3">
+                  <p className="text-[10px] font-semibold uppercase leading-relaxed tracking-[0.2em] text-foreground/65">
                     {cap.meta}
                   </p>
-                  <h3 className="font-display text-xl leading-tight tracking-tight text-foreground md:text-2xl">
+                  <h3 className="font-display text-xl leading-tight tracking-tight text-foreground md:text-[1.6rem]">
                     {cap.title}
                   </h3>
-                  <p className="text-sm leading-relaxed text-foreground/80">
+                  <p className="text-sm leading-relaxed text-foreground/85">
                     {cap.body}
                   </p>
                 </div>
