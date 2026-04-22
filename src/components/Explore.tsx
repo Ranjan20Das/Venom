@@ -34,51 +34,58 @@ type Capability = {
   meta: string;
   title: string;
   body: string;
-  span: string;
+  stat: string;
+  statLabel: string;
 };
 
 const capabilities: Capability[] = [
   {
     icon: Zap,
-    meta: "LIFTING CAPACITY: 40 TONS",
+    meta: "Physical Augmentation",
     title: "Superhuman Strength",
-    body: "The symbiote augments its host's musculature to superhuman levels, granting the ability to lift 40 tons and strike with bone-crushing force. Reflexes and agility are enhanced far beyond peak human capability.",
-    span: "md:col-span-7",
+    body: "The symbiote rewires Eddie Brock's musculature, granting bone-crushing power, supernatural reflexes, and agility far beyond peak human limits.",
+    stat: "40T",
+    statLabel: "Lifting Capacity",
   },
   {
     icon: Maximize2,
-    meta: "RANGE: 70 FEET · DISSOLVES IN ~3 HRS",
+    meta: "Ranged Combat",
     title: "Bioorganic Webbing",
-    body: "Venom fires high-pressure strands of regenerative symbiote matter — stronger than steel cable and indistinguishable from Spider-Man's web to most sensors.",
-    span: "md:col-span-5",
+    body: "Venom fires high-pressure strands of regenerative symbiote matter — stronger than steel cable and indistinguishable from Spider-Man's webbing.",
+    stat: "70 FT",
+    statLabel: "Effective Range",
   },
   {
     icon: Sparkles,
-    meta: "FULL-BODY MORPHOLOGY",
+    meta: "Morphology",
     title: "Shape-Shifting",
-    body: "Generates tendrils, shields, claws, and full alternate body forms from Brock's mass. Near-invisibility via colour and texture mimicry.",
-    span: "md:col-span-4",
+    body: "Generates tendrils, shields, claws, and entire alternate body forms from Brock's mass. Achieves near-invisibility via colour and texture mimicry.",
+    stat: "∞",
+    statLabel: "Form Variations",
   },
   {
     icon: RefreshCw,
-    meta: "HEALS IN SECONDS",
+    meta: "Healing Factor",
     title: "Rapid Regeneration",
-    body: "Symbiote matter seals wounds and reconstitutes damaged tissue at extraordinary speed, making Venom nearly impossible to incapacitate.",
-    span: "md:col-span-4",
+    body: "Symbiote matter seals open wounds and reconstitutes damaged tissue in seconds, making Venom nearly impossible to incapacitate in combat.",
+    stat: "<5s",
+    statLabel: "Tissue Recovery",
   },
   {
     icon: ShieldCheck,
-    meta: "IMMUNE TO SPIDER-SENSE · RESISTS PENANCE STARE",
-    title: "Psychic & Supernatural Immunity",
-    body: "Because the symbiote absorbed Spider-Man's genetic blueprint, Peter Parker's extrasensory spider-sense cannot detect Venom. The alien biology also provides resistance to certain supernatural attacks — though sonic waves and intense heat remain critical vulnerabilities.",
-    span: "md:col-span-4",
+    meta: "Defensive Trait",
+    title: "Psychic Immunity",
+    body: "Because the symbiote absorbed Spider-Man's genetic blueprint, Peter Parker's spider-sense cannot detect Venom — granting a permanent tactical edge.",
+    stat: "100%",
+    statLabel: "Spider-Sense Evasion",
   },
   {
     icon: Brain,
-    meta: "SHARED CONSCIOUSNESS",
+    meta: "Cognitive Bond",
     title: "Symbiotic Hivemind",
-    body: "Brock and the symbiote share thoughts, memories, and instincts in real time — two minds operating as one lethal organism.",
-    span: "md:col-span-12",
+    body: "Brock and the symbiote share thoughts, memories, and instincts in real time — two minds operating as one lethal, coordinated organism.",
+    stat: "2:1",
+    statLabel: "Minds Bonded",
   },
 ];
 
