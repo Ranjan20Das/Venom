@@ -34,51 +34,58 @@ type Capability = {
   meta: string;
   title: string;
   body: string;
-  span: string;
+  stat: string;
+  statLabel: string;
 };
 
 const capabilities: Capability[] = [
   {
     icon: Zap,
-    meta: "LIFTING CAPACITY: 40 TONS",
+    meta: "Physical Augmentation",
     title: "Superhuman Strength",
-    body: "The symbiote augments its host's musculature to superhuman levels, granting the ability to lift 40 tons and strike with bone-crushing force. Reflexes and agility are enhanced far beyond peak human capability.",
-    span: "md:col-span-7",
+    body: "The symbiote rewires Eddie Brock's musculature, granting bone-crushing power, supernatural reflexes, and agility far beyond peak human limits.",
+    stat: "40T",
+    statLabel: "Lifting Capacity",
   },
   {
     icon: Maximize2,
-    meta: "RANGE: 70 FEET · DISSOLVES IN ~3 HRS",
+    meta: "Ranged Combat",
     title: "Bioorganic Webbing",
-    body: "Venom fires high-pressure strands of regenerative symbiote matter — stronger than steel cable and indistinguishable from Spider-Man's web to most sensors.",
-    span: "md:col-span-5",
+    body: "Venom fires high-pressure strands of regenerative symbiote matter — stronger than steel cable and indistinguishable from Spider-Man's webbing.",
+    stat: "70 FT",
+    statLabel: "Effective Range",
   },
   {
     icon: Sparkles,
-    meta: "FULL-BODY MORPHOLOGY",
+    meta: "Morphology",
     title: "Shape-Shifting",
-    body: "Generates tendrils, shields, claws, and full alternate body forms from Brock's mass. Near-invisibility via colour and texture mimicry.",
-    span: "md:col-span-4",
+    body: "Generates tendrils, shields, claws, and entire alternate body forms from Brock's mass. Achieves near-invisibility via colour and texture mimicry.",
+    stat: "∞",
+    statLabel: "Form Variations",
   },
   {
     icon: RefreshCw,
-    meta: "HEALS IN SECONDS",
+    meta: "Healing Factor",
     title: "Rapid Regeneration",
-    body: "Symbiote matter seals wounds and reconstitutes damaged tissue at extraordinary speed, making Venom nearly impossible to incapacitate.",
-    span: "md:col-span-4",
+    body: "Symbiote matter seals open wounds and reconstitutes damaged tissue in seconds, making Venom nearly impossible to incapacitate in combat.",
+    stat: "<5s",
+    statLabel: "Tissue Recovery",
   },
   {
     icon: ShieldCheck,
-    meta: "IMMUNE TO SPIDER-SENSE · RESISTS PENANCE STARE",
-    title: "Psychic & Supernatural Immunity",
-    body: "Because the symbiote absorbed Spider-Man's genetic blueprint, Peter Parker's extrasensory spider-sense cannot detect Venom. The alien biology also provides resistance to certain supernatural attacks — though sonic waves and intense heat remain critical vulnerabilities.",
-    span: "md:col-span-4",
+    meta: "Defensive Trait",
+    title: "Psychic Immunity",
+    body: "Because the symbiote absorbed Spider-Man's genetic blueprint, Peter Parker's spider-sense cannot detect Venom — granting a permanent tactical edge.",
+    stat: "100%",
+    statLabel: "Spider-Sense Evasion",
   },
   {
     icon: Brain,
-    meta: "SHARED CONSCIOUSNESS",
+    meta: "Cognitive Bond",
     title: "Symbiotic Hivemind",
-    body: "Brock and the symbiote share thoughts, memories, and instincts in real time — two minds operating as one lethal organism.",
-    span: "md:col-span-12",
+    body: "Brock and the symbiote share thoughts, memories, and instincts in real time — two minds operating as one lethal, coordinated organism.",
+    stat: "2:1",
+    statLabel: "Minds Bonded",
   },
 ];
 
@@ -236,40 +243,53 @@ export function Explore() {
           </div>
         </div>
 
-        {/* Cards bento grid */}
-        <div className="relative z-10 mt-20 grid grid-cols-1 gap-5 sm:grid-cols-2 md:mt-24 md:grid-cols-12">
-          {capabilities.map((cap) => {
+        {/* Cards — uniform 3-column grid */}
+        <div className="relative z-10 mt-20 grid grid-cols-1 gap-5 sm:grid-cols-2 md:mt-24 lg:grid-cols-3">
+          {capabilities.map((cap, idx) => {
             const Icon = cap.icon;
             return (
               <article
                 key={cap.title}
                 data-card
-                className={[
-                  "group relative z-10 flex h-full min-h-[340px] flex-col overflow-hidden rounded-3xl border border-foreground/20 bg-card/90 p-6 shadow-[0_8px_40px_-12px_oklch(0_0_0/0.6)] backdrop-blur-md transition-all duration-500 sm:p-7",
-                  "hover:-translate-y-1 hover:border-foreground/40 hover:bg-card",
-                  cap.span,
-                ].join(" ")}
+                className="group relative z-10 flex h-full flex-col overflow-hidden rounded-2xl border border-foreground/15 bg-card/90 p-7 shadow-[0_8px_40px_-12px_oklch(0_0_0/0.6)] backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:border-foreground/40 hover:bg-card"
               >
-                <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 [background:radial-gradient(600px_circle_at_50%_0%,oklch(1_0_0/0.06),transparent_60%)]" />
+                <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 [background:radial-gradient(500px_circle_at_50%_0%,oklch(1_0_0/0.06),transparent_60%)]" />
 
-                {/* Icon */}
-                <div className="relative shrink-0">
-                  <div className="cap-halo pointer-events-none absolute -inset-2 rounded-full bg-foreground/10 blur-xl opacity-30" />
-                  <div className="relative grid h-11 w-11 place-items-center rounded-full bg-foreground/15 ring-1 ring-foreground/25">
-                    <Icon className="h-4 w-4 text-foreground" />
+                {/* Header row: icon + index */}
+                <div className="relative flex items-start justify-between">
+                  <div className="relative">
+                    <div className="cap-halo pointer-events-none absolute -inset-2 rounded-full bg-foreground/10 blur-xl opacity-30" />
+                    <div className="relative grid h-12 w-12 place-items-center rounded-xl bg-foreground/15 ring-1 ring-foreground/25">
+                      <Icon className="h-5 w-5 text-foreground" />
+                    </div>
                   </div>
+                  <span className="font-mono text-[11px] font-semibold tracking-[0.2em] text-foreground/40">
+                    0{idx + 1}
+                  </span>
                 </div>
 
+                {/* Meta */}
+                <p className="relative mt-7 text-[10px] font-semibold uppercase tracking-[0.25em] text-foreground/55">
+                  {cap.meta}
+                </p>
+
+                {/* Title */}
+                <h3 className="font-display relative mt-3 text-2xl leading-tight tracking-tight text-foreground">
+                  {cap.title}
+                </h3>
+
                 {/* Body */}
-                <div className="mt-6 flex flex-1 flex-col gap-3">
-                  <p className="text-[10px] font-semibold uppercase leading-relaxed tracking-[0.2em] text-foreground/65">
-                    {cap.meta}
+                <p className="relative mt-3 flex-1 text-sm leading-relaxed text-foreground/80">
+                  {cap.body}
+                </p>
+
+                {/* Footer stat */}
+                <div className="relative mt-6 border-t border-foreground/10 pt-5">
+                  <p className="font-display text-3xl leading-none tracking-tight text-foreground">
+                    {cap.stat}
                   </p>
-                  <h3 className="font-display text-xl leading-tight tracking-tight text-foreground md:text-[1.6rem]">
-                    {cap.title}
-                  </h3>
-                  <p className="text-sm leading-relaxed text-foreground/85">
-                    {cap.body}
+                  <p className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.25em] text-foreground/50">
+                    {cap.statLabel}
                   </p>
                 </div>
               </article>
