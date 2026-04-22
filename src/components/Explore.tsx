@@ -165,7 +165,7 @@ export function Explore() {
       {/* Giant ghost POWER word — same treatment as SYMBIOTE in About */}
       <motion.h2
         style={{ x: ghostX, opacity: ghostOpacity }}
-        className="font-display pointer-events-none absolute inset-x-0 top-16 select-none whitespace-nowrap text-center text-[22vw] leading-none tracking-tight text-foreground"
+        className="font-display pointer-events-none absolute inset-x-0 top-16 z-0 select-none whitespace-nowrap text-center text-[22vw] leading-none tracking-tight text-foreground"
         aria-hidden
       >
         POWER
