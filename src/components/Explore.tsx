@@ -245,8 +245,8 @@ export function Explore() {
                 key={cap.title}
                 data-card
                 className={[
-                  "group relative flex h-full min-h-[320px] flex-col overflow-hidden rounded-3xl border border-foreground/10 bg-card/40 p-7 backdrop-blur-sm transition-all duration-500",
-                  "hover:-translate-y-1 hover:border-foreground/25 hover:bg-card/70",
+                  "group relative flex h-full min-h-[320px] flex-col overflow-hidden rounded-3xl border border-foreground/20 bg-card/80 p-7 backdrop-blur-md transition-all duration-500",
+                  "hover:-translate-y-1 hover:border-foreground/40 hover:bg-card/95",
                   cap.span,
                 ].join(" ")}
               >
