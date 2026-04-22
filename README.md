@@ -2,7 +2,7 @@
 
 A cinematic, high-performance web platform dedicated to the Marvel Symbiote Saga. This project serves as a comprehensive digital encyclopedia and lore hub for the "Venom" universe, covering comic origins, symbiote capabilities, and the Sony film trilogy.
 
-# Live Preview:- https://venom-website.lovable.app/
+**Live preview**:- https://venom-website.lovable.app/
 
 ## 🕸️ Project Overview
 
@@ -65,8 +65,6 @@ Accents: Symbiote Violet and Neon Teal gradients for interactive elements.
 Typography: Heavy, bold sans-serif headers (representing Venom's power) paired with clean, readable body text.
 
 📁 Project Structure
-Plaintext
-
 src/
 ├── components/     # Reusable UI elements (Buttons, Cards, Nav)
 ├── sections/       # Major landing page blocks (Hero, Power, Trilogy)
@@ -74,7 +72,8 @@ src/
 ├── styles/         # Tailwind configurations and global CSS
 ├── types/          # TypeScript interfaces and definitions
 └── utils/          # Helper functions for API integrations
+
 🛡️ License
 This project is for educational and fan purposes. All characters, names, and related indicia are trademarks of © Marvel and Sony Pictures.
 
-Crafted by Ranjan Das ||  We Are Venom
+Crafted by Ranjan Das || We Are Venom.
