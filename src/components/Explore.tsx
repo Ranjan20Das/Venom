@@ -63,22 +63,8 @@ const capabilities: Capability[] = [
     stat: "∞",
     statLabel: "Form Variations",
   },
-  {
-    icon: RefreshCw,
-    meta: "Healing Factor",
-    title: "Rapid Regeneration",
-    body: "Symbiote matter seals open wounds and reconstitutes damaged tissue in seconds, making Venom nearly impossible to incapacitate in combat.",
-    stat: "<5s",
-    statLabel: "Tissue Recovery",
-  },
-  {
-    icon: ShieldCheck,
-    meta: "Defensive Trait",
-    title: "Psychic Immunity",
-    body: "Because the symbiote absorbed Spider-Man's genetic blueprint, Peter Parker's spider-sense cannot detect Venom — granting a permanent tactical edge.",
-    stat: "100%",
-    statLabel: "Spider-Sense Evasion",
-  },
+  
+ 
   {
     icon: Brain,
     meta: "Cognitive Bond",
